@@ -33,7 +33,7 @@ A beautiful, modern implementation of the classic Tic Tac Toe game built with pu
 
 ## 🚀 Live Demo
 
-[Play the Game](https://your-username.github.io/tic-tac-toe) *(Replace with your actual GitHub Pages URL)*
+https://dreamy-kleicha-85dbe6.netlify.app/
 
 ## 📱 Screenshots
 
@@ -44,6 +44,9 @@ The game features a stunning desktop interface with glass morphism effects and s
 
 ### Mobile View
 Fully responsive design that works perfectly on all mobile devices with touch support.
+![image](https://github.com/user-attachments/assets/1c5f9701-9a36-4403-ac39-3cd0db03612c)
+
+
 
 ### Victory Screen
 Celebratory modal with animations and confetti effects when a player wins.
