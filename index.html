@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe - Ultimate Strategy Game</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation">
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+        <div class="floating-shape shape-4"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="title-container">
+                <div class="sparkle">✨</div>
+                <h1 class="title">Tic Tac Toe</h1>
+                <div class="sparkle">✨</div>
+            </div>
+            <p class="subtitle">Challenge your friends to the ultimate strategy game</p>
+        </header>
+
+        <!-- Score Board -->
+        <div class="scoreboard">
+            <div class="score-item">
+                <div class="player-symbol x-symbol">X</div>
+                <div class="player-name">Player X</div>
+                <div class="score" id="score-x">0</div>
+            </div>
+            <div class="score-item center">
+                <div class="trophy">🏆</div>
+                <div class="player-name">Draws</div>
+                <div class="score" id="score-draws">0</div>
+            </div>
+            <div class="score-item">
+                <div class="player-symbol o-symbol">O</div>
+                <div class="player-name">Player O</div>
+                <div class="score" id="score-o">0</div>
+            </div>
+        </div>
+
+        <!-- Current Player Indicator -->
+        <div class="current-player" id="current-player">
+            <span class="indicator-text">Current Player:</span>
+            <span class="current-symbol" id="current-symbol">X</span>
+        </div>
+
+        <!-- Game Board -->
+        <div class="game-board">
+            <div class="box" data-index="0"></div>
+            <div class="box" data-index="1"></div>
+            <div class="box" data-index="2"></div>
+            <div class="box" data-index="3"></div>
+            <div class="box" data-index="4"></div>
+            <div class="box" data-index="5"></div>
+            <div class="box" data-index="6"></div>
+            <div class="box" data-index="7"></div>
+            <div class="box" data-index="8"></div>
+        </div>
+
+        <!-- Control Buttons -->
+        <div class="controls">
+            <button class="btn btn-secondary" id="reset-game">
+                <span class="btn-icon">🔄</span>
+                Reset Game
+            </button>
+            <button class="btn btn-danger" id="reset-scores">
+                <span class="btn-icon">🏆</span>
+                Reset Scores
+            </button>
+        </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal">
+            <div class="modal-content">
+                <div class="modal-icon" id="modal-icon">🏆</div>
+                <h2 class="modal-title" id="modal-title">Victory!</h2>
+                <p class="modal-message" id="modal-message">Player X wins!</p>
+                <button class="btn btn-primary" id="play-again">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
