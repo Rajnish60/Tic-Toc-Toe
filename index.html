@@ -24,14 +24,51 @@
                 <h1 class="title">Tic Tac Toe</h1>
                 <div class="sparkle">✨</div>
             </div>
-            <p class="subtitle">Challenge your friends to the ultimate strategy game</p>
+            <p class="subtitle">Challenge your friends or test your skills against AI</p>
         </header>
+
+        <!-- Game Mode Selection -->
+        <div class="game-mode-selector" id="game-mode-selector">
+            <h3 class="mode-title">Choose Game Mode</h3>
+            <div class="mode-buttons">
+                <button class="mode-btn active" id="pvp-mode" data-mode="pvp">
+                    <span class="mode-icon">👥</span>
+                    <span class="mode-text">Player vs Player</span>
+                </button>
+                <button class="mode-btn" id="ai-mode" data-mode="ai">
+                    <span class="mode-icon">🤖</span>
+                    <span class="mode-text">Player vs AI</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- AI Difficulty Selection -->
+        <div class="difficulty-selector" id="difficulty-selector" style="display: none;">
+            <h3 class="difficulty-title">Select AI Difficulty</h3>
+            <div class="difficulty-buttons">
+                <button class="difficulty-btn active" id="easy-btn" data-difficulty="easy">
+                    <span class="difficulty-icon">😊</span>
+                    <span class="difficulty-text">Easy</span>
+                    <span class="difficulty-desc">Random moves</span>
+                </button>
+                <button class="difficulty-btn" id="medium-btn" data-difficulty="medium">
+                    <span class="difficulty-icon">🤔</span>
+                    <span class="difficulty-text">Medium</span>
+                    <span class="difficulty-desc">Smart blocking</span>
+                </button>
+                <button class="difficulty-btn" id="hard-btn" data-difficulty="hard">
+                    <span class="difficulty-icon">🧠</span>
+                    <span class="difficulty-text">Hard</span>
+                    <span class="difficulty-desc">Unbeatable</span>
+                </button>
+            </div>
+        </div>
 
         <!-- Score Board -->
         <div class="scoreboard">
             <div class="score-item">
                 <div class="player-symbol x-symbol">X</div>
-                <div class="player-name">Player X</div>
+                <div class="player-name" id="player-x-name">Player X</div>
                 <div class="score" id="score-x">0</div>
             </div>
             <div class="score-item center">
@@ -41,7 +78,7 @@
             </div>
             <div class="score-item">
                 <div class="player-symbol o-symbol">O</div>
-                <div class="player-name">Player O</div>
+                <div class="player-name" id="player-o-name">Player O</div>
                 <div class="score" id="score-o">0</div>
             </div>
         </div>
@@ -74,6 +111,10 @@
             <button class="btn btn-danger" id="reset-scores">
                 <span class="btn-icon">🏆</span>
                 Reset Scores
+            </button>
+            <button class="btn btn-primary" id="change-mode">
+                <span class="btn-icon">⚙️</span>
+                Change Mode
             </button>
         </div>
     </div>
