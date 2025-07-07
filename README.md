@@ -31,7 +31,7 @@ A responsive, interactive, and feature-rich Tic Tac Toe game built with vanilla 
 
 ## 🚀 Live Demo
 
-[Play the Game](https://your-username.github.io/tic-tac-toe) *(Replace with your actual deployment URL)*
+[Play the Game](https://tic-tac-toe-champ.netlify.app/)
 
 --
 🔧 Setup Instructions
