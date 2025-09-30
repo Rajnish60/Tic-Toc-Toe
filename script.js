@@ -1,20 +1,17 @@
-// Game state
 let board = Array(9).fill(null);
 let currentPlayer = 'X';
 let gameActive = true;
 let scores = { X: 0, O: 0, draws: 0 };
-let gameMode = 'pvp'; // 'pvp' or 'ai'
-let aiDifficulty = 'easy'; // 'easy', 'medium', 'hard'
+let gameMode = 'pvp'; 
+let aiDifficulty = 'easy'; 
 let isAiTurn = false;
 
-// Win patterns
 const winPatterns = [
-    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
-    [0, 4, 8], [2, 4, 6]             // Diagonals
+    [0, 1, 2], [3, 4, 5], [6, 7, 8], 
+    [0, 3, 6], [1, 4, 7], [2, 5, 8], 
+    [0, 4, 8], [2, 4, 6]             
 ];
 
-// DOM elements
 const boxes = document.querySelectorAll('.box');
 const currentPlayerElement = document.getElementById('current-player');
 const currentSymbolElement = document.getElementById('current-symbol');
@@ -30,7 +27,6 @@ const modalTitle = document.getElementById('modal-title');
 const modalMessage = document.getElementById('modal-message');
 const playAgainBtn = document.getElementById('play-again');
 
-// Mode and difficulty selectors
 const gameModeSelector = document.getElementById('game-mode-selector');
 const difficultySelector = document.getElementById('difficulty-selector');
 const modeButtons = document.querySelectorAll('.mode-btn');
@@ -39,7 +35,6 @@ const playerXName = document.getElementById('player-x-name');
 const playerOName = document.getElementById('player-o-name');
 const gameBoard = document.querySelector('.game-board');
 
-// Smooth scroll and focus utility
 function smoothScrollToElement(element, callback = null) {
     element.scrollIntoView({ 
         behavior: 'smooth', 
@@ -47,7 +42,6 @@ function smoothScrollToElement(element, callback = null) {
         inline: 'center'
     });
     
-    // Add focus highlight
     element.style.transform = 'scale(1.02)';
     element.style.transition = 'transform 0.3s ease';
     
@@ -57,7 +51,6 @@ function smoothScrollToElement(element, callback = null) {
     }, 300);
 }
 
-// Initialize game
 function initGame() {
     boxes.forEach((box, index) => {
         box.addEventListener('click', () => handleBoxClick(index));
@@ -68,12 +61,10 @@ function initGame() {
     changeModeBtn.addEventListener('click', showModeSelector);
     playAgainBtn.addEventListener('click', closeModalAndReset);
     
-    // Mode selection
     modeButtons.forEach(btn => {
         btn.addEventListener('click', () => selectGameMode(btn.dataset.mode));
     });
     
-    // Difficulty selection
     difficultyButtons.forEach(btn => {
         btn.addEventListener('click', () => selectDifficulty(btn.dataset.difficulty));
     });
@@ -83,25 +74,20 @@ function initGame() {
     updatePlayerNames();
 }
 
-// Game mode selection
 function selectGameMode(mode) {
     gameMode = mode;
     
-    // Update active button
     modeButtons.forEach(btn => btn.classList.remove('active'));
     document.querySelector(`[data-mode="${mode}"]`).classList.add('active');
     
-    // Show/hide difficulty selector with smooth transition
     if (mode === 'ai') {
         difficultySelector.style.display = 'block';
-        // Smooth scroll to difficulty selector
         setTimeout(() => {
             smoothScrollToElement(difficultySelector);
         }, 100);
     } else {
         difficultySelector.style.display = 'none';
         gameModeSelector.style.display = 'none';
-        // Scroll to game board for PvP mode
         setTimeout(() => {
             smoothScrollToElement(gameBoard);
         }, 100);
@@ -114,21 +100,17 @@ function selectGameMode(mode) {
     }
 }
 
-// Difficulty selection
 function selectDifficulty(difficulty) {
     aiDifficulty = difficulty;
     
-    // Update active button
     difficultyButtons.forEach(btn => btn.classList.remove('active'));
     document.querySelector(`[data-difficulty="${difficulty}"]`).classList.add('active');
     
     gameModeSelector.style.display = 'none';
     difficultySelector.style.display = 'none';
     
-    // Smooth scroll to game board after difficulty selection
     setTimeout(() => {
         smoothScrollToElement(gameBoard, () => {
-            // Add a subtle pulse effect to the game board
             gameBoard.style.boxShadow = '0 0 30px rgba(255, 255, 255, 0.3)';
             setTimeout(() => {
                 gameBoard.style.boxShadow = '';
@@ -139,20 +121,17 @@ function selectDifficulty(difficulty) {
     resetGame();
 }
 
-// Show mode selector with smooth scroll
 function showModeSelector() {
     gameModeSelector.style.display = 'block';
     if (gameMode === 'ai') {
         difficultySelector.style.display = 'block';
     }
     
-    // Smooth scroll to mode selector
     setTimeout(() => {
         smoothScrollToElement(gameModeSelector);
     }, 100);
 }
 
-// Update player names based on game mode
 function updatePlayerNames() {
     if (gameMode === 'ai') {
         playerXName.textContent = 'You';
@@ -163,29 +142,23 @@ function updatePlayerNames() {
     }
 }
 
-// Handle box click
 function handleBoxClick(index) {
     if (board[index] || !gameActive || isAiTurn) return;
     
     makeMove(index, currentPlayer);
 }
 
-// Make a move
 function makeMove(index, player) {
-    // Update board state
     board[index] = player;
     
-    // Update UI
     const box = boxes[index];
     box.textContent = player;
     box.classList.add(player.toLowerCase());
     box.classList.add('symbol-appear');
     box.classList.add('disabled');
     
-    // Play sound
     playSound(800, 0.1);
     
-    // Check for win or draw
     const result = checkGameResult();
     
     if (result.winner) {
@@ -193,24 +166,20 @@ function makeMove(index, player) {
     } else if (result.draw) {
         handleDraw();
     } else {
-        // Switch player
         currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
         updateCurrentPlayerDisplay();
         
-        // If it's AI's turn, make AI move
         if (gameMode === 'ai' && currentPlayer === 'O') {
-            setTimeout(makeAiMove, 500); // Delay for better UX
+            setTimeout(makeAiMove, 500); 
         }
     }
 }
 
-// AI Move Logic
 function makeAiMove() {
     if (!gameActive) return;
     
     isAiTurn = true;
     
-    // Add thinking animation
     const availableMoves = getAvailableMoves();
     availableMoves.forEach(index => {
         boxes[index].classList.add('ai-thinking');
@@ -231,7 +200,6 @@ function makeAiMove() {
     }
     
     setTimeout(() => {
-        // Remove thinking animation
         availableMoves.forEach(index => {
             boxes[index].classList.remove('ai-thinking');
         });
@@ -244,20 +212,16 @@ function makeAiMove() {
     }, 1000);
 }
 
-// Get available moves
 function getAvailableMoves() {
     return board.map((cell, index) => cell === null ? index : null).filter(val => val !== null);
 }
 
-// Easy AI - Random moves
 function getRandomMove() {
     const availableMoves = getAvailableMoves();
     return availableMoves.length > 0 ? availableMoves[Math.floor(Math.random() * availableMoves.length)] : -1;
 }
 
-// Medium AI - Block player wins and try to win
 function getMediumMove() {
-    // First, try to win
     for (let i = 0; i < 9; i++) {
         if (board[i] === null) {
             board[i] = 'O';
@@ -269,7 +233,6 @@ function getMediumMove() {
         }
     }
     
-    // Then, try to block player
     for (let i = 0; i < 9; i++) {
         if (board[i] === null) {
             board[i] = 'X';
@@ -281,21 +244,17 @@ function getMediumMove() {
         }
     }
     
-    // Otherwise, random move
     return getRandomMove();
 }
 
-// Hard AI - Minimax algorithm (unbeatable)
 function getHardMove() {
     const bestMove = minimax(board, 'O');
     return bestMove.index;
 }
 
-// Minimax algorithm
 function minimax(currentBoard, player) {
     const availableMoves = currentBoard.map((cell, index) => cell === null ? index : null).filter(val => val !== null);
-    
-    // Check for terminal states
+
     const winner = checkWinner(currentBoard);
     if (winner === 'X') return { score: -10 };
     if (winner === 'O') return { score: 10 };
@@ -343,7 +302,6 @@ function minimax(currentBoard, player) {
     return moves[bestMove];
 }
 
-// Check winner for minimax
 function checkWinner(currentBoard) {
     for (const pattern of winPatterns) {
         const [a, b, c] = pattern;
@@ -354,17 +312,14 @@ function checkWinner(currentBoard) {
     return null;
 }
 
-// Check game result
 function checkGameResult() {
-    // Check for winner
     for (const pattern of winPatterns) {
         const [a, b, c] = pattern;
         if (board[a] && board[a] === board[b] && board[a] === board[c]) {
             return { winner: board[a], pattern };
         }
     }
-    
-    // Check for draw
+
     if (board.every(cell => cell !== null)) {
         return { draw: true };
     }
@@ -372,45 +327,36 @@ function checkGameResult() {
     return { winner: null, draw: false };
 }
 
-// Handle win
 function handleWin(winner, pattern) {
     gameActive = false;
     scores[winner]++;
-    
-    // Highlight winning pattern
+
     pattern.forEach(index => {
         boxes[index].classList.add('winning');
     });
-    
-    // Update score display
+
     updateScoreDisplay();
-    
-    // Play victory sound
+
     setTimeout(() => playSound(523, 0.2), 100);
     setTimeout(() => playSound(659, 0.2), 300);
     setTimeout(() => playSound(784, 0.4), 500);
-    
-    // Show modal after animation
+
     setTimeout(() => {
         showModal(winner, 'win');
     }, 1000);
 }
 
-// Handle draw
 function handleDraw() {
     gameActive = false;
     scores.draws++;
-    
-    // Update score display
+
     updateScoreDisplay();
-    
-    // Show modal
+
     setTimeout(() => {
         showModal(null, 'draw');
     }, 500);
 }
 
-// Show modal
 function showModal(winner, type) {
     if (type === 'win') {
         modalIcon.textContent = '🏆';
@@ -438,13 +384,11 @@ function showModal(winner, type) {
     modalOverlay.classList.add('show');
 }
 
-// Close modal and reset
 function closeModalAndReset() {
     modalOverlay.classList.remove('show');
     setTimeout(resetGame, 300);
 }
 
-// Reset game
 function resetGame() {
     board = Array(9).fill(null);
     currentPlayer = 'X';
@@ -460,13 +404,11 @@ function resetGame() {
     modalOverlay.classList.remove('show');
 }
 
-// Reset scores
 function resetScores() {
     scores = { X: 0, O: 0, draws: 0 };
     updateScoreDisplay();
 }
 
-// Update current player display
 function updateCurrentPlayerDisplay() {
     if (gameMode === 'ai' && currentPlayer === 'O') {
         currentPlayerElement.style.display = 'none';
@@ -477,16 +419,13 @@ function updateCurrentPlayerDisplay() {
     }
 }
 
-// Update score display
 function updateScoreDisplay() {
     scoreXElement.textContent = scores.X;
     scoreOElement.textContent = scores.O;
     scoreDrawsElement.textContent = scores.draws;
 }
 
-// Add some visual effects
 function addVisualEffects() {
-    // Add floating particles effect
     const createParticle = () => {
         const particle = document.createElement('div');
         particle.style.position = 'fixed';
@@ -511,18 +450,15 @@ function addVisualEffects() {
         
         animation.onfinish = () => particle.remove();
     };
-    
-    // Create particles periodically
+
     setInterval(createParticle, 300);
 }
 
-// Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     initGame();
     addVisualEffects();
 });
 
-// Add keyboard support
 document.addEventListener('keydown', (e) => {
     if (e.key >= '1' && e.key <= '9') {
         const index = parseInt(e.key) - 1;
@@ -536,7 +472,6 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// Add touch support for mobile
 let touchStartX = 0;
 let touchStartY = 0;
 
@@ -553,8 +488,7 @@ document.addEventListener('touchend', (e) => {
     
     const diffX = touchStartX - touchEndX;
     const diffY = touchStartY - touchEndY;
-    
-    // Reset if swipe up
+
     if (Math.abs(diffY) > Math.abs(diffX) && diffY > 50) {
         resetGame();
     }
@@ -563,7 +497,6 @@ document.addEventListener('touchend', (e) => {
     touchStartY = 0;
 });
 
-// Add sound effects (using Web Audio API)
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
 function playSound(frequency, duration, type = 'sine') {
